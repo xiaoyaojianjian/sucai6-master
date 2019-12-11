@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/animate.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+
+</style>
+<body>
+    <div id="top">
+        <img src="images/a15.png" alt="" id="img">
+        <div id="tipContainer">
+            <div id="tip">[温馨提示]最近有不少不法分子在网上骗人，请大家注意！</div>
+        </div>
+    </div>
+    <div class="box" id="box">
+        <div class="slider" id="slider">
+            <div class="slide"><img src="images/b5.png" alt=""></div>
+            <div class="slide"><img src="images/b1.png" alt=""></div>
+            <div class="slide"><img src="images/b2.png" alt=""></div>
+            <div class="slide"><img src="images/b3.png" alt=""></div>
+            <div class="slide"><img src="images/b4.png" alt=""></div>
+            <div class="slide"><img src="images/b5.png" alt=""></div>
+            <div class="slide"><img src="images/b1.png" alt=""></div>
+        </div>
+        <span id="left">&lt</span>
+        <span id="right">&gt</span>
+        <ul class="nav" id="nav">
+            <li class="list"  id="active">1</li>
+            <li class="list" >2</li>
+            <li class="list" >3</li>
+            <li class="list" >4</li>
+            <li class="list" >5</li>
+            </ul>
+    </div>
+    <script>
+    var tip=document.getElementById("tip");
+    var box=document.getElementById("box");
+    var slider=document.getElementById("slider");
+    var left=document.getElementById("left");
+    var right=document.getElementById("right");
+    var navList=document.getElementsByClassName("list");
+
+    var index=1;
+    setInterval(function(){
+        var tipLeft=parseInt(getComputedStyle(tip).left);
+        if(tipLeft<-436.36){
+        tip.style.left="1000px";
+        }
+        else{var lastLeft=tipLeft-1+"px";
+        tip.style.left=lastLeft;}
+
+
+    },10)
+    timer=setInterval(function(){ 
+            index++; 
+            var tag=(index-1)%5;
+            navList[tag].setAttribute("id","active");
+            for(var i=0;i<5;i++){
+                if(i!=tag){
+                    navList[i].setAttribute("id",""); 
+                }
+            }
+            console.log(index)
+            animate(slider,{left:-1200*index},function(){
+            if(index==6){
+                slider.style.left='-1200px';
+                index=1;
+            }
+            });  
+        
+    },1500);
+    box.onmouseout=function(){
+        timer=setInterval(function(){ 
+            index++; 
+            var tag=(index-1)%5;
+            navList[tag].setAttribute("id","active");
+            for(var i=0;i<5;i++){
+                if(i!=tag){
+                    navList[i].setAttribute("id",""); 
+                }
+            }
+            console.log(index)
+            animate(slider,{left:-1200*index},function(){
+            if(index>=6){
+                slider.style.left='-1200px';
+                index=1;
+            }
+            });  
+        
+    },1500);
+    animate(left,{opacity:0});
+    animate(right,{opacity:0});
+    } 
+    box.onmouseover=function(){
+        clearInterval(timer);
+        animate(left,{opacity:50});
+        animate(right,{opacity:50});
+    }
+
+    for(var i=0;i<navList.length;i++){
+        navList[i].i=i;//????
+        navList[i].onclick=function(){
+            this.setAttribute("id","active")
+            for(var j=0;j<5;j++){
+                if(j!=this.i){
+                    navList[j].setAttribute("id",""); 
+                }
+            }
+            animate(slider,{left:-1200*(this.i+1)});
+        }
+    }
+    right.onclick=function(){
+        var num=Math.floor(parseInt((getComputedStyle(slider).left))/1200)*1200;
+        if(num<=-7200){
+            slider.style.left="-1200px";
+            animate(slider,{left:-2400});
+            num=-2400;
+        }
+        else{animate(slider,{left:num-=1200});}
+        // console.log(num);
+        var i=(num/-1200-1)%5;
+        navList[i].setAttribute("id","active");
+        for(var j=0;j<5;j++){
+        if(j!=i){
+                    navList[j].setAttribute("id",""); 
+                }
+            }
+    }
+    left.onclick=function(){
+        var num=Math.ceil(parseInt((getComputedStyle(slider).left))/1200)*1200;
+        if(num==0){
+            slider.style.left="-6000px";
+            animate(slider,{left:-4800});
+            num=-4800;
+        }
+        else{animate(slider,{left:num+=1200});}
+        console.log(num);
+        console.log(num+=1200);
+        var i=(num/-1200+5)%5;
+        navList[i].setAttribute("id","active");
+        for(var j=0;j<5;j++){
+        if(j!=i){
+                    navList[j].setAttribute("id",""); 
+                }
+            }
+    }
+
+    
+    </script>
+</body>
+</html>
